@@ -1,11 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<meta charset="UTF-8">
-		<title>Title</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>主页</title>
+		<!-- CSS  -->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">
+		<link rel="stylesheet" href="../css/me.css" type="text/css">
+		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/js/materialize.min.js"></script>
 	</head>
-	<body>
-		<p> 欢迎来到首页</p>
+	<body style="font-family:STFangsong;">
+		<div th:replace="common :: navbar(0)"></div>
+		<div class="section no-pad-bot" id="index-banner">
+			<div class="container">
+				<br><br>
+				<h1 class="header center">欢迎来到Simple投票系统！</h1>
+				<div class="row center">
+					<h5 class="header col s12 light">专注于投票业务~</h5>
+				</div>
+				<div class="row center">
+					<a th:href="@{/channel}" id="download-button" class="btn-large waves-effect waves-light teal lighten-2 hoverable">开始</a>
+				</div>
+				<br><br>
+			</div>
+		</div>
+		<div class="container">
+			<div class="section">
+				<div class="row">
+					<div class="col s12 m4">
+						<div class="icon-block">
+							<h2 class="center teal-text lighten-2"><i class="large material-icons">star_border</i></h2>
+							<h5 class="center">日常爱好</h5>
+							<p class="light">距离35岁退休还剩15年的码农一枚，希望能学到更多的后端知识，结交更多的朋友（特别是前端朋友哈哈）</p>
+						</div>
+					</div>
 
+					<div class="col s12 m4">
+						<div class="icon-block">
+							<h2 class="center teal-text lighten-2"><i class="large material-icons">local_dining</i></h2>
+							<h5 class="center">技术栈</h5>
+							<p class="light">前端部分：掌握基本的HTML、CSS。了解JavaScript的基本上使用 </p>
+							<p class="light">后端部分：掌握Java Web开发流程，掌握Sprint Boot框架的使用，以及Spring Security以及Sprint JPA等插件的使用。同时也对常用数据库比如Mysql、Sqlite等有一定的了解。</p>
+							<p class="light">其他：代码管理工具Git的基本使用以及会简单操作Linux。 </p>
+						</div>
+					</div>
+
+					<div class="col s12 m4">
+						<div class="icon-block">
+							<h2 class="center teal-text lighten-2"><i class="large material-icons">group</i></h2>
+							<h5 class="center">联系方式</h5>
+							<div class="row-center" style="text-align:center">
+								<ul>
+									<li>QQ : 1807886190</li>
+									<li>Email : tan13621251388@gmail.com</li>
+									<li>Github: <a href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/img/0187be5a52edcdc999f749b9e24c7815fb.jpg">点击查看</a></li>
+									<li>Leecode: <a href="https://leetcode-cn.com/u/tanyf/">点击查看</a></li>
+								</ul>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="common::footer"></div>
 	</body>
 </html>

@@ -5,7 +5,6 @@ import cn.njupt.votingsystem.pojo.User;
 import cn.njupt.votingsystem.repository.UserRepository;
 import cn.njupt.votingsystem.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,4 +36,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.error(u.toString());
         return new UserDetail(u);
     }
+
 }

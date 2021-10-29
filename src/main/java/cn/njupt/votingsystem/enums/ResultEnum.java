@@ -9,6 +9,7 @@ import lombok.Getter;
  **/
 @Getter
 public enum ResultEnum {
+    INTERNAL_WRONG(500, "内部错误!")
     ;
 
     private final Integer resultCode;

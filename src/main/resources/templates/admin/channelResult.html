@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<link rel="stylesheet" href="/css/me.css" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!-- Compiled and minified JavaScript -->
+		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/echarts.min.js" charset="UTF-8"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+		<!--    <link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">-->
+
+
+	</head>
+	<body>
+		</div>
+		<div th:replace="common::root_navbar(1)"></div>
+		<div class="container">
+			<div class="section">
+				<nav class="teal lighten-2">
+					<div class="nav-wrapper" style="margin-left: 25px;">
+						<div class="col s12">
+							<a th:href="@{/root/channel}" class="breadcrumb">全部频道</a>
+							<a class="breadcrumb" href="#" id="bread-title">Second</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div  class="card-panel">
+				<blockquote>
+					问题趋势
+				</blockquote>
+				<div class="row" >
+				</div>
+				<blockquote>
+					所有问题
+				</blockquote>
+				<div class="row ">
+					<div id="chart-container" hidden>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+		<input id="channelJson" th:value="${channel}" hidden>
+		<div th:replace="common::footer"></div>
+
+		<script type="text/javascript">
+
+            let channel = JSON.parse($("#channelJson").val());
+            let charText = "";
+
+			$("#bread-title").text(channel.title + "投票的结果")
+            for(let i = 0; i < channel.votes.length; ++i){
+                charText += "\t\t\t\t\t<div class=\"col s6 l6 card-panel\">\n" +
+                    "\t\t\t\t\t\t<div id=\"main-" + i+ "\" style=\"width: 600px;height:400px;\"></div>\n" +
+                    "\t\t\t\t\t</div>"
+
+            }
+            $("#chart-container").after(charText);
+            for(let i = 0; i < channel.votes.length; ++i) {
+                let myChart = echarts.init(document.getElementById('main-' + i));
+                let chartData = new Array();
+                let vote = channel.votes[i];
+                for(let j = 0; j < vote.voteOptionsList.length; j++){
+                    let item = {
+                        "value" :  vote.voteOptionsList[j].totalVoting,
+                        "name"  :  vote.voteOptionsList[j].optionsInfo
+                    }
+                    chartData.push(item);
+                }
+                myChart.setOption({
+                    title: {
+                        top: 20,
+                        text: vote.title,
+                        // subtext: "投票总人数：" + channel.votingNum,
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b} : {c} ({d}%)'
+                    },
+                    series : [
+                        {
+                            name : vote.title,
+                            type: 'pie',
+                            radius : '55%',
+                            center: ['50%', '50%'],
+                            selectedMode: 'single',
+                            data: chartData
+                        }
+                    ],
+	                  emphasis: {
+                          itemStyle: {
+                              shadowBlur: 10,
+                                  shadowOffsetX: 0,
+                                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                          }
+                      }
+                })
+
+            }
+		</script>
+
+
+	</body>
+</html>

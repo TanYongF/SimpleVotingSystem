@@ -6,29 +6,99 @@
 		<meta name="description" content="">
 		<meta name="author" content="">
 		<title>Please sign in</title>
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
-		      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-		      crossorigin="anonymous">
-		<link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet"
-		      crossorigin="anonymous"/>
+		<link rel="stylesheet" href="/css/me.css" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">
+		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/js/materialize.min.js"></script>
 	</head>
 	<body>
-		<div class="container">
-			<form class="form-signin" method="post" action="/login">
-				<h2 class="form-signin-heading">请 登 录</h2>
-				<p>
-					<label for="username" class="sr-only">Username</label>
-					<input type="text" id="username" name="username" class="form-control" placeholder="Username"
-					       required autofocus>
-				</p>
-				<p>
-					<label for="password" class="sr-only">Password</label>
-					<input type="password" id="password" name="password" class="form-control" placeholder="Password"
-					       required>
-				</p>
-				<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-			</form>
+		<div th:replace="common :: navbar(2)"></div>
+
+		<!--主体开始-->
+		<div class="container login-container" style="flex: 1 0 auto; width: 90%">
+
+			<!--开始-->
+			<div class="row">
+				<div class="col s12 l12">
+					<div class="card horizontal large" style="height: 600px"  >
+						<div class="card-image" >
+							<img width="600" height="500" th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/600/500?blur=5&' " class="responsive-img wp-post-image" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
+							<span class="card-title" id="channelTitleSpan">
+								<p style="font-size: 64px">简约投票系统</p>
+								<br>
+								We Are<br>
+								A Simple Voting System
+								<!--							<ul class="" style="font-size: 25px">-->
+<!--								<li>·美观</li>-->
+<!--								<li>·高效</li>-->
+<!--								<li>·简洁</li>-->
+<!--							</ul>-->
+							</span>
+<!--							<span class="card-title">-->
+<!--								<ur>-->
+<!--									<li>fafa</li>-->
+<!--								</ur>-->
+<!--							</span>-->
+						</div>
+						<div class="card-stacked">
+							<div class="card-content center">
+								<div class="section">
+									<div class="col s12 l12">
+										<div class="row section">
+											<h3 class="title left-align " style="font-weight: 900"><span class="red-text">·</span>登录</h3>
+										</div>
+										<form method="post" action="/login" th:id="login-form" class="horizontal section">
+											<div class="row">
+												<div class="input-field col s12">
+													<i class="material-icons prefix">account_circle</i>
+													<input id="username" type="text"  class="validate" name="username" value="">
+													<label for="username">账号</label>
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-field col s12">
+													<i class="material-icons prefix">vpn_key</i>
+													<input id="password" type="text"  class="validate" name="password" value="">
+													<label for="password">密码</label>
+												</div>
+											</div>
+											<div class="section row">
+												<div class="right-align">
+													<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
+													<button class="btn waves-effect waves-light large" type="submit" name="action">登录
+														<!--											<i class="material-icons right">send</i>-->
+													</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--结束-->
+
+
 		</div>
+		<!--主体结束-->
+
+		<!--底部按钮开始-->
+		<div class="fixed-action-btn">
+			<a class="btn-floating btn-large red" th:href="@{/channel}">
+				<i class="large material-icons">mode_edit</i>
+			</a>
+			<ul>
+				<li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+				<li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+				<li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+				<li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+			</ul>
+		</div>
+		<!--底部按结束-->
+		<div th:replace="common::footer"></div>
+
 	</body>
 </html>

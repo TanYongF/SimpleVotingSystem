@@ -1,9 +1,8 @@
 package cn.njupt.votingsystem.service;
 
+import cn.njupt.votingsystem.model.ChannelDTO;
 import cn.njupt.votingsystem.pojo.Channel;
-import cn.njupt.votingsystem.repository.ChannelRepository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -17,7 +16,13 @@ public interface ChannelService  {
 
     List<Channel> findAll();
 
+    List<ChannelDTO> findAllToChannelInfo();
+
     Boolean deleteById(Integer id);
 
     Channel save(Channel channel);
+
+    Channel writeBack(Integer channelId);
+
+    Channel update(Channel channel);
 }

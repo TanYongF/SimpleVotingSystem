@@ -43,6 +43,9 @@ public class RestResult<T> {
     public static <T> RestResult<T> error(Integer code, String message){
         return new RestResult<>(code,message);
     }
+    public static <T> RestResult<T> error(Integer code, T data){
+        return new RestResult<>(code,data);
+    }
 
     public static <T> RestResult<T> error(String message){
         return new RestResult<>(500,message);

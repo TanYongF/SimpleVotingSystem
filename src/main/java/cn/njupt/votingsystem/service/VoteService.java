@@ -12,8 +12,12 @@ import java.util.List;
 public interface VoteService {
     Vote save(Vote v);
 
-    void deleteVoteById(Vote v);
+    void deleteVoteById(Integer id);
 
     List<Vote> findAllVotes();
+
+    Vote findById(Integer id);
+
+    void vote();
 
 }

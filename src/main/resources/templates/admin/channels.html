@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--    <link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">-->
+		<link rel="stylesheet" href="/css/me.css" type="text/css">
+		<!-- Compiled and minified JavaScript -->
+		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+	</head>
+	<body>
+		<div th:replace="common::root_navbar(1)"></div>
+		<div class="container">
+			<div class="section">
+				<nav class="teal lighten-2">
+					<div class="nav-wrapper" style="margin-left: 25px;">
+						<div class="col s12">
+							<a th:href="@{/root/channel}" class="breadcrumb">全部频道</a>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div class="row">
+				<div class="card">
+					<div class="card-image hoverable">
+						<img src="https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/1232/100?blur=5"  width="1232" height="100">
+						<span class="card-title" id="channelTitleSpan" >所有频道</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="card-panel center-align">
+						<form>
+							<!--TODO：完善修改-->
+						</form>
+						<div class="row">
+							<table class="striped centered">
+								<thead>
+									<tr>
+										<th>频道名称</th>
+										<th>简介</th>
+										<th>投票人数</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="channel, channelStat : ${channels}">
+										<td  th:text= "${channel.title}")>1</td>
+										<td  th:text=" ${#strings.abbreviate(channel.info,30)}">1</td>
+										<td th:text="${channel.votingNum}">1</td>
+										<td>
+											<a th:href="@{'/root/channel/' + ${channel.id}}" class="waves-effect waves-light btn blue">查看</a>
+											<a th:href="@{'/root/channel/result/' + ${channel.id}}" th:id="'show' + ${channel.id} "class="waves-effect waves-light btn green show" onclick="resultChannel(this.id)">结果</a>
+											<a th:id="'dele' + ${channel.id}" class="waves-effect waves-light btn red dele" onclick="deleteChannel(this.id)">删除</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="section">
+							<ul class="pagination">
+								<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+								<li class="active"><a href="#!">1</a></li>
+								<li class="waves-effect"><a href="#!">2</a></li>
+								<li class="waves-effect"><a href="#!">3</a></li>
+								<li class="waves-effect"><a href="#!">4</a></li>
+								<li class="waves-effect"><a href="#!">5</a></li>
+								<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+							</ul>
+						</div>
+						<div class="row">
+							<a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#add-modal"><i class="material-icons">add</i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--添加频道 Modal 开始-->
+		<div class="modal" id = "add-modal">
+			<div class="modal-content">
+				<div class="section">
+					<div class="section">
+						<blockquote>
+							设置新的频道
+						</blockquote>
+					</div>
+					<div class="row">
+						<div class="input-field col s12 l12 ">
+							<i class="material-icons prefix">title</i>
+							<input id="channelTitleAdd" type="text" class="validate">
+							<label for="channelTitleAdd">频道名称</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s12 l12 ">
+							<i class="material-icons prefix">title</i>
+							<input id="channelInfoAdd" type="text" class="validate" >
+							<label for="channelInfoAdd">频道简介</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a onclick="addChannel()" class="modal-close waves-effect waves-green btn-flat">保存</a>
+			</div>
+		</div>
+		<!--添加频道 Modal 结束-->
+		<input hidden th:value="${channels.size()}" id="channelSize">
+
+		<div th:replace="common::footer"></div>
+		<script>
+            /*初始化*/
+            $(document).ready(function(){
+                M.AutoInit();
+                $('.datepicker').datepicker();
+                $('.modal').modal();
+                $('.fixed-action-btn').floatingActionButton();
+                $('.tooltipped').tooltip();
+            });
+
+            /*删除按钮操作*/
+            function deleteChannel (channelId){
+				channelId = channelId.substr(4, channelId.size);
+                $.ajax({
+	                url: "/root/channel/" + channelId,
+	                type: "delete",
+                }).done(function (data){
+                    if(data.code === 200){
+                        M.toast({
+	                        html: '删除频道成功！',
+	                        displayLength: 1000,
+	                        inDuration: 100,
+	                        classes: 'rounded green',
+	                        completeCallback: function () {
+		                        location.reload()
+                            }
+                        });
+                    }else alert("删除失败！")
+                })
+			}
+
+            /*添加频道按钮操作*/
+            function addChannel (){
+                let channelToAddTitle = $("#channelTitleAdd").val();
+                // console.log(channelToAddTitle)
+                let channelTOAddInfo  = $("#channelInfoAdd").val();
+                let dataForm =JSON.stringify({
+                    "title": channelToAddTitle,
+	                "info" : channelTOAddInfo,
+	                "votes" : []
+                })
+	            console.log(dataForm)
+                $.ajax({
+	                url: "/root/channel",
+	                type: "post",
+                    contentType: "application/json",
+                    data: dataForm,
+                    dataType: "json"
+                }).done(function (data){
+                    if(data.code === 200){
+	                    alert("保存成功！ ")
+	                    location.reload()
+                    }
+                })
+            }
+
+		</script>
+
+
+	</body>
+</html>

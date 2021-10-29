@@ -1,9 +1,9 @@
 package cn.njupt.votingsystem.service;
 
+import cn.njupt.votingsystem.pojo.Vote;
+import cn.njupt.votingsystem.pojo.VoteOptions;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +22,17 @@ public class RedisService {
     @Resource
     protected RedisTemplate redisTemplate;
 
+    public boolean setString(final String key, String value){
+        boolean result = false;
+        try {
+            ValueOperations operations = redisTemplate.opsForValue();
+            operations.set(key, value);
+            result = true;
+        } catch (Exception e) {
+            log.error("写入redis缓存失败！错误信息为：" + e.getMessage());
+        }
+        return result;
+    }
     /**
      * 写入redis缓存（不设置expire存活时间）
      * @param key
@@ -132,6 +143,11 @@ public class RedisService {
             if(exists(key)){
                 set(key, (int)get(key) + 1);
             }
+        }
+    }
+    public void removeVote(Vote vote){
+        for(VoteOptions vp : vote.getVoteOptionsList()){
+            remove("option_" + vp.getId());
         }
     }
 }

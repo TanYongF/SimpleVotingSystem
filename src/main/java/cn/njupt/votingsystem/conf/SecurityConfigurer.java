@@ -34,7 +34,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             "/static/**",
             "/images/**",
             "/css/**",
-            "/js/**"
+            "/js/**",
+            "/channel/**"
     };
 
     @Override
@@ -43,7 +44,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 //失败处理
                 .failureHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.FORBIDDEN, RestResult.error(403, e.getMessage())))
                 //成功处理
-                .successHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.OK, RestResult.success(login())))
+                .successHandler((req, resp, e) -> login()).defaultSuccessUrl("/root")
                 .permitAll()
                 .and().exceptionHandling()
                 //请求登录处理，改变默认跳转登录页

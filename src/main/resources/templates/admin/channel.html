@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/me.css" type="text/css">
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <!--    <link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">-->
+
+
+  </head>
+  <body>
+    <div th:replace="common::root_navbar(1)"></div>
+    <div class="container">
+      <div class="section">
+        <nav class="teal lighten-2">
+          <div class="nav-wrapper" style="margin-left: 25px;">
+            <div class="col s12">
+              <a th:href="@{/root/channel}" class="breadcrumb">全部频道</a>
+              <a th:href="@{'/root/channel/' + channel.id }" class="breadcrumb" th:text="${channel.title}">Second</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="row">
+        <div class="card">
+          <div class="card-image">
+            <img src="https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/1232/100?blur=5"  width="1232" height="100">
+            <span class="card-title" id="channelTitleSpan" th:text="${channel.title}" style="font-weight: 900;">Card Title</span>
+          </div>
+        </div>
+      </div>
+      <div class="section card-panel">
+
+        <div class="row">
+          <blockquote style="border-color: dodgerblue">
+            投票信息
+          </blockquote>
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s12 l12 ">
+                <i class="material-icons prefix">title</i>
+                <input placeholder="" id="channelTitle" type="text" class="validate" th:value="${channel.title}">
+                <label for="channelTitle">频道名称</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12" >
+                <i class="material-icons prefix">info_outline</i>
+                <textarea placeholder="" id="channelInfo" type="text" class="materialize-textarea" th:text="${channel.info}"></textarea>
+                <label for="channelInfo">频道简介</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <i class="material-icons prefix">access_time</i>
+                <input id="start_time" class="datepicker" type="text" th:value="${#temporals.format(channel.startTime,'yyyy-MM-dd')}">
+                <label for="start_time">开始时间</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="end_time" class="datepicker" type="text" th:value="${#temporals.format(channel.endTime,'yyyy-MM-dd')}">
+                <label for="start_time">结束时间</label>
+              </div>
+            </div>
+            <div class="row section">
+              <blockquote>
+                投票项目
+              </blockquote>
+              <table class="centered striped">
+                <thead>
+                  <tr>
+                    <th>编号</th>
+                    <th>问题</th>
+                    <th>最后更新时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="vote,voteStat : ${channel.getVotes()}">
+                    <td th:text="${voteStat.index + 1}"></td>
+                    <td th:text="${vote.title}">null</td>
+                    <td th:text="${#temporals.format(channel.updateAt,'yyyy-MM-dd HH:mm')}">fafa</td>
+                    <td>
+                      <a class="waves-effect waves-light btn blue" th:id="'show_' + ${vote.id}" onclick="showVote(this.id)">查看</a>
+                      <a class="waves-effect waves-light btn red" th:id="'dele_' + ${vote.id}" onclick="deleteVote(this.id)">删除</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </form>
+        </div>
+        <!--底部按钮开始-->
+        <div class="row center-align">
+          <a class="btn-floating btn-large green lighten-2 modal-trigger tooltipped" href="#modal1"  data-position ="left"  data-tooltip="添加问题" >
+            <i class="label material-icons">add</i>
+          </a>
+          <a class="btn-floating btn-large blue lighten-2 tooltipped" data-position="right" data-tooltip="保存频道" id="channelSave">
+            <i class="label material-icons">check</i>
+          </a>
+        </div>
+        <!--底部按钮结束-->
+
+        <!--添加频道 MODAL-->
+        <div id="modal1" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <h4>添加一个投票项目</h4>
+            <div class="section">
+              <form>
+                <blockquote>投票问题</blockquote>
+                <div class="row">
+                  <div class="input-field col s12 l12 ">
+                    <i class="material-icons prefix">title</i>
+                    <textarea id="channelTitleEdit" class="materialize-textarea" th:id="vote-title"></textarea>
+                    <label for="channelTitleEdit">问题内容</label>
+                  </div>
+                </div>
+                <blockquote>选项</blockquote>
+                <div class="row options">
+                  <div class="input-field col s12 l12 ">
+                    <i class="material-icons prefix">keyboard_arrow_right</i>
+                    <input  type="text" class="validate" id = "edit-option-1">
+                    <label for="edit-option-1">选项1</label>
+                  </div>
+                </div>
+                <div class="row options">
+                  <div class="input-field col s12 l12 ">
+                    <i class="material-icons prefix">keyboard_arrow_right</i>
+                    <input type="text" class="validate" id="edit-option-2">
+                    <label for="edit-option-2">选项2</label>
+                  </div>
+                </div>
+                <div class="row center">
+                  <a class="btn-large btn-floating large red" id="voteItemDelete"><i class="material-icons label">exposure_neg_1</i></a>
+                  <a class="btn-large btn-floating large green" id="voteItemAdd"><i class="material-icons label">add</i></a>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="vote-save">确定</a>
+          </div>
+        </div>
+        <!--添加下频道MODAL结束-->
+
+        <!--查看频道 MODAL 开始-->
+        <div id="modal2" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <h4 >此投票项目</h4>
+            <div class="section">
+              <form>
+                <blockquote>投票问题</blockquote>
+                <div class="row">
+                  <div class="input-field col s12 l12 ">
+                    <i class="material-icons prefix">title</i>
+                    <textarea placeholder="" id="channelTitleShow" class="materialize-textarea"  disabled></textarea>
+                    <label for="channelTitleShow">问题内容</label>
+                  </div>
+                </div>
+                <blockquote id="modal-show-title">选项</blockquote>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" >保存</a>
+          </div>
+        </div>
+        <!--查看频道MODAL结束-->
+      </div>
+    </div>
+
+    <!--左下角返回按钮-->
+    <div class="fixed-action-btn" style="right: 0; left: 40px">
+      <a class="btn-floating btn-large blue lighten-1" th:href="@{/root/channel}">
+        <i class="large material-icons">arrow_back</i>
+      </a>
+    </div>
+
+
+    <input th:id="_channel" th:value="${channelJson}" hidden/>
+
+
+    <div th:replace="common::footer"></div>
+    <script>
+
+      let channelValue = $("#_channel").val();
+      let channel = JSON.parse(channelValue);
+      let votes = channel.votes;
+
+      /*初始化*/
+      $(document).ready(function(){
+        $('.datepicker').datepicker({
+          format : "yyyy-mm-dd",
+          autoClose: true
+        });
+        $('.modal').modal();
+        $('.fixed-action-btn').floatingActionButton();
+        $('.tooltipped').tooltip();
+      });
+
+      /*查看票项目按钮*/
+      function showVote(voteId) {
+        voteId = voteId.substr(5, voteId.length);
+        $.ajax({
+          url: "/root/vote/" + voteId,
+          type: "get"
+        }).done(function (data) {
+          if(data.code === 200){
+            console.log(data)
+            let voteJson = data.message;
+            let vote     = JSON.parse(voteJson);
+            $("#channelTitleShow").val(vote.title)
+            let options = vote.voteOptionsList;
+            let optionText = "";
+            for(let i = 0; i < options.length; i++){
+              optionText += "                <div class=\"row options options-show-input\">\n" +
+                      "                  <div class=\"input-field col s12 l12 \">\n" +
+                      "                    <i class=\"material-icons prefix\">keyboard_arrow_right</i>\n" +
+                      "                    <input placeholder=\" \" type=\"text\" class=\"validate\" id = \"option-show-"+(i+1)+"\" value=\""+ options[i].optionsInfo +"\" disabled>\n" +
+                      "                    <label class=\"active\" for=\"option-show-"+ (i+1) +"\">选项"+ (i+1)+"</label>\n" +
+                      "                  </div>\n" +
+                      "                </div>"
+            }
+            $(".options-show-input").remove()
+            $("#modal-show-title").after(optionText);
+            let instance = M.Modal.getInstance(document.getElementById("modal2"));
+            instance.open();
+          }
+        });
+
+
+
+      }
+
+      /*删除投票项按钮*/
+      function deleteVote(voteId){
+        console.log(voteId);
+        voteId = voteId.substr(5, voteId.length);
+        $.ajax({
+          url: "/root/vote/" + voteId,
+          type: "delete"
+        }).done(function (data) {
+          if(data.code === 200){
+            M.toast({
+              html: '删除成功！',
+              classes: 'rounded green',
+              displayLength : 1000,
+              inDuration: 100,
+              outDuration: 0,
+              completeCallback: function(){location.reload()}
+            });
+          }
+        });
+      }
+
+      /*动态添加投票项*/
+      $("#voteItemAdd").click(function () {
+        let optionsNum = $(".options").length;
+        let optionText = "                <div class=\"row options\">\n" +
+                "                  <div class=\"input-field col s12 l12 \">\n" +
+                "                    <i class=\"material-icons prefix\">keyboard_arrow_right</i>\n" +
+                "                    <input type=\"text\" class=\"validate\" id=\"edit-option-" + (optionsNum + 1) + "\">\n" +
+                "                    <label for=\"edit-option-" + (optionsNum + 1) + "\">选项" + (optionsNum+ 1) +"</label>\n" +
+                "                  </div>\n" +
+                "                </div>"
+        $(".options").eq(optionsNum-1).after(optionText)
+      })
+
+      /*频道页面，保存频道按钮*/
+      $("#channelSave").click(function () {
+        channel.endTime = $("#end_time").val() + " 00:00:00";
+        channel.startTime =$("#start_time").val()+ " 00:00:00";
+        channel.title = $("#channelTitle").val();
+        channel.info =  $("#channelInfo").val();
+        let dataForm = JSON.stringify(channel);
+        $.ajax({
+          url: "/root/channel/info",
+          type: "put",
+          data: dataForm,
+          dataType: "json",
+          contentType: "application/json"
+        }).done(function (data) {
+          if(data.code == 200) {
+            M.toast({
+              html: '保存成功！',
+              classes: 'rounded green',
+              displayLength : 1000,
+              inDuration: 100,
+              outDuration: 0,
+              completeCallback: function(){location.reload()}
+            });
+
+          }
+        })
+      })
+
+      /*Modal删除投票项按钮*/
+      $("#voteItemDelete").click(function () {
+        let optionsNum = $(".options").length;
+        if(optionsNum === 1) M.toast({html: '最少一个选项！', classes: 'rounded red'});
+        else $(".options").eq(optionsNum-1).remove();
+      })
+      /*Modal保存投票项按钮*/
+      $("#vote-save").click(function (){
+        let optionsNum = $(".options").length;
+        let options = new Array();
+        for(let i = 1; i <= optionsNum; i++){
+          let optionObj = {
+            "optionsInfo" : $('#edit-option-' + i).val(),
+          }
+          options.push(optionObj);
+        }
+        let vote = {
+          "voteOptionsList": options,
+          "title" : $("#vote-title").val()
+        }
+        let s = JSON.stringify(votes);
+        let voteJson = JSON.stringify(vote);
+        if (s.length == 2) s = s.substr(0, s.length - 1) + voteJson + ']';
+        else s = s.substr(0, s.length - 1) + ',' + voteJson + ']';
+        channel.votes = JSON.parse(s);
+        let dataForm = JSON.stringify(channel);
+        $.ajax({
+          url: "/root/channel",
+          type: "put",
+          contentType: "application/json",
+          data: dataForm,
+          dataType: "json"
+        }).done(function (data) {
+          console.log(data.code);
+          if (data.code == 200) {
+            M.toast({
+              html: '保存成功！',
+              classes: 'rounded green',
+              displayLength : 500,
+              inDuration: 100,
+              outDuration: 0,
+              completeCallback: function(){location.reload()}
+            });
+
+          } else alert("修改失败！");
+        })
+      })
+    </script>
+
+
+  </body>
+</html>
