@@ -1,9 +1,11 @@
 package cn.njupt.votingsystem.controller;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.json.JSONUtil;
 import cn.njupt.votingsystem.model.ChannelDTO;
 import cn.njupt.votingsystem.model.RestResult;
 import cn.njupt.votingsystem.pojo.Channel;
+import cn.njupt.votingsystem.pojo.UserVotes;
 import cn.njupt.votingsystem.service.ChannelService;
 import cn.njupt.votingsystem.service.RedisService;
 import cn.njupt.votingsystem.service.UserVotesService;
@@ -49,6 +51,7 @@ public class ChannelController {
                       HttpServletResponse response){
         Channel channel = channelService.getById(channelId);
         String ip = IPUtil.getIpAddress(request);
+        UserVotes record = new UserVotes();
         boolean canVote = true;
         //如果不存在VID那么就创建，存在就会查找是否可以填写
         if(VID == null){
@@ -58,19 +61,25 @@ public class ChannelController {
             cookie.setPath("/");
             cookie.setMaxAge(3600 * 24 * 365 * 3);
             response.addCookie(cookie);
-//            log.error("第壹次登录， 创建新的VID" + VID);
         }else{
             canVote = userVotesService.checkUser(ip, VID, channelId);
-//            log.error("VID"+VID + "是否可以写: " + canVote);
         }
         Cookie optionCookie = new Cookie("optionId", IdUtil.simpleUUID());
         optionCookie.setPath("/vote");
         response.addCookie(optionCookie);
         if(canVote){
             redisService.setString(VID, optionCookie.getValue());
+            model.addAttribute("canVote", 0);
+        }
+        else {
+            List<UserVotes> records = userVotesService.getByVIDAndChannelId(VID, channelId);
+            if(records.size() == 0) model.addAttribute("canVote", 1);
+            else{
+                model.addAttribute("canVote", 2);
+                model.addAttribute("answers", JSONUtil.toJsonStr(records.get(0).getVotes()));
+            }
         }
         model.addAttribute("votes", channel);
-        model.addAttribute("canVote", canVote);
         model.addAttribute("allVotingNums", redisService.get("channel_"+ channelId));
         return "channel";
     }

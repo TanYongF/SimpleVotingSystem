@@ -8,7 +8,10 @@
 	<body>
 		<div >
 			<nav class="teal lighten-2"  role="navigation" th:fragment="navbar(n)">
-				<div class="nav-wrapper container"><a id="logo-container" href="./index.html" class="brand-logo">Simple投票系统</a>
+				<div class="nav-wrapper container">
+					<a id="logo-container"  class="brand-logo">
+						<i class="material-icons large">blur_on</i>Simple Voting System
+					</a>
 					<ul class="right hide-on-med-and-down">
 						<li th:classappend="${n == 0} ? 'active'"><a th:href="@{/index}" class="active">首页</a></li>
 						<li th:classappend="${n == 1} ? 'active'"><a th:href="@{/channel}">频道</a></li>
@@ -31,36 +34,35 @@
 		</div>
 
 			<footer class="page-footer teal lighten-2" th:fragment="footer" >
+				<script color="0,0,0" opacity="0.5" count="99" src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.js" type="text/javascript" charset="utf-8"></script>
 				<div class="container">
 					<div class="row">
-						<div class="col s12 l4">
+						<div class="col s12 l4 center">
 							<h5 class="title white-text">技术实现</h5>
-							<p>后端：Spring全家桶</p>
-							<p>主体使用HTML、CSS开发，Material Design风格</p>
-							<br>
+							<p>后端：Spring全家桶<br>主体使用HTML、CSS开发<br>Material Design风格<br>Jquery框架</p>
 						</div>
-						<div class="col s12 l4">
+						<div class="col s12 l4 center">
 							<h5 class="title white-text">开发人员</h5>
 							<ul>
-								<li >谭永锋</li>
-								<li >谭永锋</li>
-								<li >谭永锋</li>
+								<li>B19040229谭永锋</li>
+								<li >徐子健</li>
+								<li >王雪臣</li>
 							</ul>
 						</div>
-						<div class="col s12 l4">
-							<h5 class="title white-text">开发人员</h5>
+						<div class="col s12 l4 center">
+							<h5 class="title white-text">产品理念</h5>
 							<ul>
-								<li >谭永锋</li>
-								<li >谭永锋</li>
-								<li >谭永锋</li>
+								<li >页面简约</li>
+								<li >高效运行</li>
+								<li >操作便捷</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 				<div class="footer-copyright">
 					<div class="container">
-						© 2021 Copyright Text
-						<a class="grey-text text-lighten-4 right" href="https://github.com/TanYongF/SimpleVotingSystem">项目地址</a>
+						© 2021 南京邮电大学软件实践项目作品
+						<a class="grey-text text-lighten-4 right" href="https://github.com/TanYongF/SimpleVotingSystem">项目地址【Github】</a>
 					</div>
 				</div>
 			</footer>

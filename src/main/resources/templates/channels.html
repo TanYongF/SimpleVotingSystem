@@ -6,13 +6,14 @@
 		<title>主页</title>
 		<!-- CSS  -->
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">
-		<link rel="stylesheet" href="../css/me.css" type="text/css">
-		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-		<script src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/js/materialize.min.js"></script>
+		<link rel="stylesheet" href="/css/materialize.min.css"type="text/css">
+		<link rel="stylesheet" href="/css/me.css" type="text/css">
+
+		<script type="text/javascript" src="/js/jquery.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/js/materialize.min.js" charset="UTF-8"></script>
+
 	</head>
-	<body style="font-family:STFangsong;">
-<!--		<p>fafafaf</p>-->
+	<body>
 		<div th:replace="common :: navbar(1)"></div>
 
 		<div class="container">
@@ -25,27 +26,39 @@
 									热门频道
 								</blockquote>
 							</div>
-							<div th:each="index : ${#numbers.sequence(0,2)}">
-								<div class="col s12 m6 l4">
+							<div th:each="index : ${#numbers.sequence(0,1)}">
+								<div class="col s12 m6 l6">
 									<div class="card hoverable">
 										<div class="card-image waves-effect waves-block waves-light">
 											<a th:href="@{'/channel/' + ${channels.get(index).id}}">
 												<img width="305" height="229" th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/305/229?blur=1&random=' + ${index + 1} " class="responsive-img wp-post-image" alt="Pikolo Espresso / Downtown, Montréal" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
-												<span class="card-title home" th:text="${channels.get(index).title}">名称</span>
+
+												<span th:u class="card-title home" >
+													<span th:text="${channels.get(index).title}"></span>
+													<br>
+													<span style="font-style: italic" th:text=" ${#temporals.format(channels.get(index).startTime,'yyyy.MM.dd')} + '—' +${#temporals.format(channels.get(index).endTime,'MM.dd')}"></span>
+
+												</span >
 												<!--												<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>-->
 											</a>
 										</div>
 										<div class="card-content">
-											<span th:text="${channels.get(index).title}" class="truncate">公司简介</span>
+											<span>
+												<span th:text="${channels.get(index).info}" class="truncate">产品简介</span>
+											</span>
+
 										</div>
 										<div class="card-action" >
 											<div class="row" style="height: 3px">
-												<div class="col s12 m12 l6">
+												<div class="center">
+													<span>
+														<svg t="1635522477904" class=" material-icons prefix" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1242" width="20" height="20">
+															<path d="M859.995 460.963c-1.197 10.478-1.197 21.854 0 33.527v88.305c0 160.751-110.161 296.657-258.34 336.17v-52.982c0-49.693-40.112-89.805-89.505-89.805h-0.3c-49.394 0-89.805 40.112-89.805 89.805v52.982c-148.179-39.812-258.04-175.719-258.04-336.17V431.328c39.814 32.33 93.098 91.302 89.805 172.726 33.227-153.267 99.085-176.318 154.764-239.48 72.444-82.321 93.996-172.726 52.386-259.538C641.17 167.6 687.868 409.476 672.901 536.7c64.959-115.251 146.682-146.083 187.094-154.166v78.429z" fill="#FF7B15" p-id="1243">
+															</path>
+														</svg>
+													</span>
 													<span th:text="${channels.get(index).votingNum}+'人已投票'"></span>&nbsp
 													<span ><i class="tiny material-icons">check</i></span>
-												</div>
-												<div class="col s12 m12 l6 ">
-													<span class="right-align" th:text="${#temporals.format(channels.get(index).startTime,'yyyy.MM.dd')} + '—' +${#temporals.format(channels.get(index).endTime,'MM.dd')} "></span>
 												</div>
 											</div>
 										</div>
@@ -65,7 +78,11 @@
 										<div class="card-image waves-effect waves-block waves-light">
 											<a th:href="@{'/channel/' + ${channel.id}}">
 												<img width="305" height="229" th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/305/229?blur=1&random=' + ${channelStat.index + 1} " class="responsive-img wp-post-image" alt="Pikolo Espresso / Downtown, Montréal" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
-												<span class="card-title home" th:text="${channel.title}">名称</span>
+												<span class="card-title home" >
+													<span th:text="${channel.title}">标题</span><br>
+													<span style="font-style: italic" th:text="${#temporals.format(channel.startTime,'yyyy.MM.dd')} + '—' +${#temporals.format(channel.endTime,'MM.dd')} "></span>
+												</span>
+
 <!--												<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>-->
 											</a>
 										</div>
@@ -73,13 +90,10 @@
 											<span th:text="${channel.info}" class="truncate">公司简介</span>
 										</div>
 										<div class="card-action" >
-											<div class="row" style="height: 3px">
-												<div class="col s12 m12 l6">
+											<div class="row" style="height: 2px">
+												<div class="center">
 													<span th:text="${channel.votingNum}+'人已投票'"></span>&nbsp
 													<span ><i class="tiny material-icons">check</i></span>
-												</div>
-												<div class="col s12 m12 l6 ">
-													<span class="right-align" th:text="${#temporals.format(channel.startTime,'yyyy.MM.dd')} + '—' +${#temporals.format(channel.endTime,'MM.dd')} "></span>
 												</div>
 											</div>
 										</div>
@@ -94,12 +108,4 @@
 
 		<div th:replace="common::footer"></div>
 	</body>
-	<script>
-		var createDiv = function () {
-
-
-        }
-
-
-	</script>
 </html>

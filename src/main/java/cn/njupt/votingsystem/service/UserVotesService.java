@@ -18,4 +18,6 @@ public interface UserVotesService {
     List<UserVoteGroupDay> calByDay();
 
     List<UserVoteGroupDay> calByDayAndChannelId(Integer id);
+
+    List<UserVotes> getByVIDAndChannelId(String VID, Integer channelId);
 }

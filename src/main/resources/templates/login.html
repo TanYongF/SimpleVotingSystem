@@ -2,15 +2,14 @@
       xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
 		<title>Please sign in</title>
-		<link rel="stylesheet" href="/css/me.css" type="text/css">
+
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">
-		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-		<script src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/js/materialize.min.js"></script>
+		<link rel="stylesheet" href="/css/materialize.min.css"type="text/css">
+		<link rel="stylesheet" href="/css/me.css" type="text/css">
+
+		<script type="text/javascript" src="/js/jquery.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/js/materialize.min.js" charset="UTF-8"></script>
 	</head>
 	<body>
 		<div th:replace="common :: navbar(2)"></div>
@@ -19,9 +18,9 @@
 		<div class="container login-container" style="flex: 1 0 auto; width: 90%">
 
 			<!--开始-->
-			<div class="row">
+			<div class="row section">
 				<div class="col s12 l12">
-					<div class="card horizontal large" style="height: 600px"  >
+					<div class="card horizontal large" style="height: 600px" >
 						<div class="card-image" >
 							<img width="600" height="500" th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/600/500?blur=5&' " class="responsive-img wp-post-image" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
 							<span class="card-title" id="channelTitleSpan">
@@ -29,24 +28,14 @@
 								<br>
 								We Are<br>
 								A Simple Voting System
-								<!--							<ul class="" style="font-size: 25px">-->
-<!--								<li>·美观</li>-->
-<!--								<li>·高效</li>-->
-<!--								<li>·简洁</li>-->
-<!--							</ul>-->
 							</span>
-<!--							<span class="card-title">-->
-<!--								<ur>-->
-<!--									<li>fafa</li>-->
-<!--								</ur>-->
-<!--							</span>-->
 						</div>
 						<div class="card-stacked">
 							<div class="card-content center">
 								<div class="section">
 									<div class="col s12 l12">
 										<div class="row section">
-											<h3 class="title left-align " style="font-weight: 900"><span class="red-text">·</span>登录</h3>
+											<h3 class="title left-align " style="font-weight: 900"><span class="red-text">·&nbsp;</span>登录</h3>
 										</div>
 										<form method="post" action="/login" th:id="login-form" class="horizontal section">
 											<div class="row">
@@ -66,7 +55,7 @@
 											<div class="section row">
 												<div class="right-align">
 													<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-													<button class="btn waves-effect waves-light large" type="submit" name="action">登录
+													<button class="btn-large waves-effect waves-light large" type="submit" name="action">登录
 														<!--											<i class="material-icons right">send</i>-->
 													</button>
 												</div>
@@ -85,19 +74,6 @@
 		</div>
 		<!--主体结束-->
 
-		<!--底部按钮开始-->
-		<div class="fixed-action-btn">
-			<a class="btn-floating btn-large red" th:href="@{/channel}">
-				<i class="large material-icons">mode_edit</i>
-			</a>
-			<ul>
-				<li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
-				<li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-				<li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-				<li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-			</ul>
-		</div>
-		<!--底部按结束-->
 		<div th:replace="common::footer"></div>
 
 	</body>

@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserVotesRepository extends JpaRepository<UserVotes, Integer> {
     Boolean existsByVIDAndChannelId(String VID, Integer channelId);
 
-    Integer countByUserIP(String IP);
+    Integer countByUserIPAndChannelId(String IP, Integer channelId);
 
     @Override
     <S extends UserVotes> S save(S entity);
@@ -29,4 +29,7 @@ public interface UserVotesRepository extends JpaRepository<UserVotes, Integer> {
                     "group by  month(uv.createAt), year(uv.createAt), day(createAt)", nativeQuery = true
     )
     List<UserVoteGroupDay> findNumsGroupByDayAndChannelId(Integer channelId);
+
+    List<UserVotes> findByVIDAndChannelId(String VID, Integer ChannelId);
+
 }

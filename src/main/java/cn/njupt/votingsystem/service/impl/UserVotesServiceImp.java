@@ -24,7 +24,7 @@ public class UserVotesServiceImp implements UserVotesService {
     public boolean checkUser(String IP, String VID, Integer channelId) {
         Boolean hasVisited = userVotesRepository.existsByVIDAndChannelId(VID, channelId);
         if(hasVisited) return false;
-        Integer ipCounts = userVotesRepository.countByUserIP(IP);
+        Integer ipCounts = userVotesRepository.countByUserIPAndChannelId(IP, channelId);
         if(ipCounts > 10) return false;
         return true;
     }
@@ -42,6 +42,12 @@ public class UserVotesServiceImp implements UserVotesService {
     @Override
     public List<UserVoteGroupDay> calByDayAndChannelId(Integer id) {
         return userVotesRepository.findNumsGroupByDayAndChannelId(id);
+    }
+
+    @Override
+    public List<UserVotes> getByVIDAndChannelId(String VID, Integer channelId) {
+        return userVotesRepository.findByVIDAndChannelId(VID, channelId);
+//        return null;
     }
 
 }

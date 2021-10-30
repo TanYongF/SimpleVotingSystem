@@ -3,13 +3,25 @@ body {
     /*background-color: rgba(244,244,244);*/
     background-size: cover;
     background-attachment: fixed;
-    zoom: 1.05;
     -moz-transform: scale(1);
     -moz-transform-origin: 0 0;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    font-family: 华文仿宋;
+
+}
+::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+}
+.bg{
+    background: url("/img/index-2.jpg") no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+    -moz-transform: scale(1);
+    -moz-transform-origin: 0 0;
+    display: flex;
+    position: relative;
+    flex-direction: column;
 }
 main {
     flex: 1 0 auto;
@@ -22,25 +34,6 @@ theme-color{
 }
 
 /*---------用户界面--------------*/
-.m-login-center {
-    text-align: center; /*让div内部文字居中*/
-    /*background-color: #fff;*/
-    border-radius: 54px;
-    width: 513px;
-    height: 358px;
-    margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.m-center-container{
-    position: relative;
-    height: 30%;
-    width: 30%;
-}
 
 #channelTitleSpan{
     right: 0;

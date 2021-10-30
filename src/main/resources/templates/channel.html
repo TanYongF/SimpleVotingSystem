@@ -4,53 +4,75 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>主页</title>
-    <!-- CSS  -->
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<!--    <link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">-->
-    <link rel="stylesheet" href="../css/me.css" type="text/css">
-    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-<!--    <script src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/js/materialize.min.js"></script>-->
+    <link rel="stylesheet" href="/css/materialize.min.css"type="text/css">
+    <link rel="stylesheet" href="/css/me.css" type="text/css">
+
+    <script type="text/javascript" src="/js/jquery.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/js/materialize.min.js" charset="UTF-8"></script>
+
   </head>
 <body>
+
   <div th:replace="common :: navbar(1)"></div>
   <div class="container main">
-    <div class="card-panel">
-      <h1 class="center" th:text="${votes.title}">投票</h1>
+    <div class="row">
+      <div class="card">
+        <div class="card-image">
+          <img th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/seed/picsum/1200/100?blur=4&random=' + ${votes.id}"  width="1232" height="100">
+          <span class="card-title" id="channelTitleSpan" th:text="${votes.title}" style="font-weight: 900;">Card Title</span>
+        </div>
+      </div>
     </div>
     <div class="card-panel">
-      <div class="section">
         <div class="row">
           <form>
             <input id="sumNum" th:value="${votes.getVotes().size()}" hidden>
             <input th:id="channelId" th:value="${votes.getId()}" hidden>
             <div class="row" th:each="vote, voteStat : ${votes.getVotes()}">
-              <h5 class="title" th:text=" ${vote.title}"></h5>
-              <p th:each="option : ${vote.voteOptionsList}">
+              <h5 class="title" th:text=" ${voteStat.index + 1} + '. ' + ${vote.title}"></h5>
+              <p th:each="option : ${vote.voteOptionsList}" style="    margin-left: 20px;">
                 <label>
-                  <input th:name="'vote_'+ ${vote.id}" type="radio" th:value="${option.id}" />
+                  <input th:name="'vote_'+ ${vote.id}" type="radio" th:value="${option.id}" th:id="'option_' + ${option.id}" class="option_input" />
                   <span th:text="${option.optionsInfo}">Red</span>
                 </label>
               </p>
             </div>
           </form>
           <div class="row center-align">
-            <button class="btn waves-effect waves-light large" id="submit_btn" >提交<i class="material-icons tiny right">favorite_border</i></button>
+            <button class="btn-large waves-effect waves-light large" id="submit_btn" >提交<i class="material-icons tiny right">favorite_border</i></button>
           </div>
         </div>
-      </div>
     </div>
   </div>
 
   <div th:replace="common::footer"></div>
 
-  <script>
+  <script th:inline="javascript">
     M.AutoInit();
+    let canVote = [[${canVote}]];
+
+    // console.log(canVote);
+    if(canVote){
+      if(canVote === 1){
+        M.toast({
+          html: '对不起，当前IP地址的投票数量已经超限！',
+          classes: 'rounded red',
+        });
+      }else if(canVote === 2){
+        M.toast({
+          html: '您已填写过该投票！',
+          classes: 'rounded red',
+        });
+        let answers = JSON.parse([[${answers}]]);
+        for(let i = 0; i < answers.length; i++){
+          $("#option_" + answers[i]).prop("checked", true);
+        }
+      }
+      $("input").prop("disabled", true);
+      $("#submit_btn").addClass("disabled")
+    }
     let form = document.querySelector("form");
     $("#submit_btn").click(function () {
       let data = new FormData(form);
@@ -82,7 +104,7 @@
               displayLength : 1000,
               inDuration: 100,
               outDuration: 0,
-              completeCallback: function(){location.reload()}
+              completeCallback: function(){$("input").prop("disabled", true);}
             });
           } else {
             alert("保存失败！");

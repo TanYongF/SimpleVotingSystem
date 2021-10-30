@@ -4,15 +4,13 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Title</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-		<link rel="stylesheet" href="/css/me.css" type="text/css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<!-- Compiled and minified JavaScript -->
-		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-		<script type="text/javascript" src="/js/echarts.min.js" charset="UTF-8"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<link rel="stylesheet" href="/css/materialize.min.css"type="text/css">
+		<link rel="stylesheet" href="/css/me.css" type="text/css">
 
-		<!--    <link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/css/materialize.min.css">-->
+		<script type="text/javascript" src="/js/jquery.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/js/materialize.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/js/echarts.min.js" charset="UTF-8"></script>
 
 
 	</head>
@@ -59,7 +57,7 @@
 			$("#bread-title").text(channel.title + "投票的结果")
             for(let i = 0; i < channel.votes.length; ++i){
                 charText += "\t\t\t\t\t<div class=\"col s6 l6 card-panel\">\n" +
-                    "\t\t\t\t\t\t<div id=\"main-" + i+ "\" style=\"width: 600px;height:400px;\"></div>\n" +
+                    "\t\t\t\t\t\t<div id=\"main-" + i+ "\" style=\"width: 100%;height:400px;\"></div>\n" +
                     "\t\t\t\t\t</div>"
 
             }
