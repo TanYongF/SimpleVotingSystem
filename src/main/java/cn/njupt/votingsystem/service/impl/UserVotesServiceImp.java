@@ -23,9 +23,9 @@ public class UserVotesServiceImp implements UserVotesService {
     @Override
     public boolean checkUser(String IP, String VID, Integer channelId) {
         Boolean hasVisited = userVotesRepository.existsByVIDAndChannelId(VID, channelId);
-        if(hasVisited) return false;
+        if (hasVisited) return false;
         Integer ipCounts = userVotesRepository.countByUserIPAndChannelId(IP, channelId);
-        if(ipCounts > 10) return false;
+        if (ipCounts > 10) return false;
         return true;
     }
 

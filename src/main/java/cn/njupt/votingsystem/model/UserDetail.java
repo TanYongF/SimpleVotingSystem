@@ -12,9 +12,9 @@ import java.util.Collection;
  * @Author: tyf
  * @CreateTime: 2021/10/25
  **/
-public class UserDetail extends User implements UserDetails{
+public class UserDetail extends User implements UserDetails {
 
-    public UserDetail(User u){
+    public UserDetail(User u) {
         BeanUtils.copyProperties(u, this);
     }
 

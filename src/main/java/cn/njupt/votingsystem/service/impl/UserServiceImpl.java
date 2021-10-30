@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         log.error("userName = " + userName);
         User u = userRepository.findByUserName(userName);
-        if(u == null) throw new UsernameNotFoundException("用户未找到");
+        if (u == null) throw new UsernameNotFoundException("用户未找到");
         log.error(u.toString());
         return new UserDetail(u);
     }

@@ -48,8 +48,8 @@ public class VoteServiceImpl implements VoteService {
 //        }
 //        log.error(v.toString());
         Vote ret = voteRepository.save(v);
-        for(VoteOptions vp : ret.getVoteOptionsList()){
-            if(!redisService.exists("option_" + vp.getId())){
+        for (VoteOptions vp : ret.getVoteOptionsList()) {
+            if (!redisService.exists("option_" + vp.getId())) {
                 redisService.set("option_" + vp.getId(), 0);
             }
         }
@@ -70,7 +70,7 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public Vote findById(Integer id) {
         Optional<Vote> byId = voteRepository.findById(id);
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             return byId.get();
         }
         return null;

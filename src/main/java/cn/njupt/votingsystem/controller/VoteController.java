@@ -38,7 +38,7 @@ public class VoteController {
 
     @ResponseBody
     @GetMapping("/vote")
-    public List<Vote> getVotes(){
+    public List<Vote> getVotes() {
         return voteService.findAllVotes();
     }
 
@@ -50,14 +50,11 @@ public class VoteController {
                                          HttpServletRequest request,
                                          @CookieValue("VID") String VID,
                                          @CookieValue("optionId") String optionId,
-                                         HttpServletResponse response){
+                                         HttpServletResponse response) {
 
         String ipAddress = IPUtil.getIpAddress(request);
-        if(VID == null){
-            log.error("为止错误！");
-        }
-        String trueOption = (String)redisService.get(VID);
-        if(!trueOption.equals(optionId)){
+        String trueOption = (String) redisService.get(VID);
+        if (!trueOption.equals(optionId)) {
             return RestResult.error(400, Boolean.FALSE);
         }
 
@@ -65,9 +62,8 @@ public class VoteController {
         redisService.plus("channel_" + channelId);
 
         //投票项每一项加1
-        for(Integer optionsId :votes){
-            redisService.plus("option_" + optionsId);
-        }
+        for (Integer optionsId : votes) redisService.plus("option_" + optionsId);
+        //记录事件
         UserVotes userVotes = new UserVotes();
         userVotes.setUserIP(ipAddress);
         userVotes.setChannelId(channelId);
@@ -75,7 +71,10 @@ public class VoteController {
         userVotes.setVotes(JSONUtil.toJsonStr(votes));
         userVotesService.save(userVotes);
 
-        return RestResult.success(200,Boolean.TRUE);
+        //redis清除
+        redisService.remove("channel_" + VID);
+
+        return RestResult.success(200, Boolean.TRUE);
     }
 
 }

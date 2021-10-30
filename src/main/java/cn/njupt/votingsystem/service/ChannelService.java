@@ -10,7 +10,7 @@ import java.util.List;
  * @Author: tyf
  * @CreateTime: 2021/10/25
  **/
-public interface ChannelService  {
+public interface ChannelService {
 
     Channel getById(Integer id);
 

@@ -14,7 +14,7 @@ import java.util.Optional;
  * @Author: tyf
  * @CreateTime: 2021/10/25
  **/
-public interface  ChannelRepository extends JpaRepository<Channel, Integer> {
+public interface ChannelRepository extends JpaRepository<Channel, Integer> {
     @Override
     Optional<Channel> findById(Integer integer);
 
@@ -29,6 +29,6 @@ public interface  ChannelRepository extends JpaRepository<Channel, Integer> {
     @Query(value =
             "select new cn.njupt.votingsystem.model.ChannelDTO(c.id, c.title, c.info, c.votingNum, c.startTime, c" +
                     ".endTime) " +
-            "from Channel c")
+                    "from Channel c")
     List<ChannelDTO> findAllToChannelInfo();
 }

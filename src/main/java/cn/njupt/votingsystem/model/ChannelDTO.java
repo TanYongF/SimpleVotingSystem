@@ -35,7 +35,8 @@ public class ChannelDTO implements Serializable {
 
     private LocalDateTime endTime;
 
-    public ChannelDTO(){}
+    public ChannelDTO() {
+    }
 
     public ChannelDTO(Integer id, String title, String info, Integer votingNum, LocalDateTime creatAt,
                       LocalDateTime updateAt) {
@@ -46,7 +47,8 @@ public class ChannelDTO implements Serializable {
         this.startTime = creatAt;
         this.endTime = updateAt;
     }
-    public ChannelDTO(String title){
+
+    public ChannelDTO(String title) {
         this.title = title;
     }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
  * @CreateTime: 2021/10/25
  **/
 public class ResponseUtil {
-    public static<T> void restResponse(HttpServletResponse resp, HttpStatus status, RestResult<T> responseVo) throws IOException {
+    public static <T> void restResponse(HttpServletResponse resp, HttpStatus status, RestResult<T> responseVo) throws IOException {
         resp.setStatus(status.value());
         resp.setContentType(MediaType.APPLICATION_JSON.toString());
         resp.getOutputStream().write(new ObjectMapper().writeValueAsBytes(responseVo));

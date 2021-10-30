@@ -36,7 +36,7 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public Channel getById(Integer id) {
         Optional<Channel> byId = channelRepository.findById(id);
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             return byId.get();
         }
         return null;
@@ -56,12 +56,12 @@ public class ChannelServiceImpl implements ChannelService {
     @Transactional
     public Boolean deleteById(Integer id) {
         Channel byId = channelRepository.getById(id);
-        redisService.remove("channel_"+ byId.getId());
-        for(Vote vote : byId.getVotes()){
+        redisService.remove("channel_" + byId.getId());
+        for (Vote vote : byId.getVotes()) {
             int[] voteOptionsId = vote.getVoteOptionsList().stream().mapToInt(VoteOptions::getId).toArray();
             ArrayList keys = new ArrayList<String>();
-            for(Integer idx : voteOptionsId) keys.add("options_" + idx);
-            redisService.remove((String[])(keys.toArray(new String[0])));
+            for (Integer idx : voteOptionsId) keys.add("options_" + idx);
+            redisService.remove((String[]) (keys.toArray(new String[0])));
         }
         channelRepository.deleteById(id);
         return Boolean.TRUE;
@@ -73,16 +73,15 @@ public class ChannelServiceImpl implements ChannelService {
         channel.setVotingNum(-1);
         Channel newChannel = channelRepository.save(channel);
         redisService.set("channel_" + newChannel.getId(), 0);
-        for(Vote vote : newChannel.getVotes()){
+        for (Vote vote : newChannel.getVotes()) {
             int[] voteOptionsIds =
-                     vote.getVoteOptionsList().stream().mapToInt(VoteOptions::getId).toArray();
+                    vote.getVoteOptionsList().stream().mapToInt(VoteOptions::getId).toArray();
             ArrayList<String> keys = new ArrayList<String>();
-            for(Integer id : voteOptionsIds) keys.add("options_" + id);
+            for (Integer id : voteOptionsIds) keys.add("options_" + id);
             redisService.add((String[]) keys.toArray(new String[0]));
         }
         return newChannel;
     }
-
 
 
     @Override
@@ -91,13 +90,13 @@ public class ChannelServiceImpl implements ChannelService {
         Integer peopleNum = (Integer) redisService.get("channel_" + old.getId());
         redisService.remove("channel_" + old.getId());
         old.setVotingNum(peopleNum);
-        for(int i = 0; i < old.getVotes().size(); i++){
+        for (int i = 0; i < old.getVotes().size(); i++) {
             Vote vote = old.getVotes().get(i);
-            for(int j = 0 ; j < vote.getVoteOptionsList().size(); j++){
+            for (int j = 0; j < vote.getVoteOptionsList().size(); j++) {
                 VoteOptions voteOptions = vote.getVoteOptionsList().get(j);
-                int singeNum = (int)redisService.get("options_" + voteOptions.getId());
+                int singeNum = (int) redisService.get("option_" + voteOptions.getId());
                 voteOptions.setTotalVoting(singeNum);
-                redisService.remove("options_" + voteOptions.getId());
+                redisService.remove("option_" + voteOptions.getId());
             }
         }
         channelRepository.save(old);
@@ -107,9 +106,9 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public Channel update(Channel channel) {
         Channel newChannel = channelRepository.save(channel);
-        for(Vote vote : newChannel.getVotes()){
-            for(VoteOptions voteOptions : vote.getVoteOptionsList()){
-                if(!redisService.exists("options_" + voteOptions.getId())){
+        for (Vote vote : newChannel.getVotes()) {
+            for (VoteOptions voteOptions : vote.getVoteOptionsList()) {
+                if (!redisService.exists("options_" + voteOptions.getId())) {
                     redisService.add("option_" + voteOptions.getId());
                 }
             }

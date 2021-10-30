@@ -26,38 +26,38 @@ public class Channel {
     private Integer id;
 
     /*
-    * 频道名称
-    * */
+     * 频道名称
+     * */
     private String title;
 
     /*
-    * 频道简介
-    * */
+     * 频道简介
+     * */
     private String info;
 
     /*
-    * 总投票人数
-    * */
+     * 总投票人数
+     * */
     private Integer votingNum;
 
-     /*
+    /*
      * 频道下投票实体
      * */
     @OneToMany(targetEntity = Vote.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "channel_id")
     private List<Vote> votes;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime endTime;
 
     @CreatedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime creatAt;
 
     @LastModifiedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime updateAt;
 }

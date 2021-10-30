@@ -19,7 +19,7 @@ public interface UserVotesRepository extends JpaRepository<UserVotes, Integer> {
             "select new cn.njupt.votingsystem.model.UserVoteGroupDay(uv.createAt, count(uv.VID), uv.channelId)" +
                     "from UserVotes uv" +
                     "group by  month(uv.createAt), year(uv.createAt), day(createAt)", nativeQuery = true
-            )
+    )
     List<UserVoteGroupDay> findNumsGroupByDay();
 
     @Query(value =

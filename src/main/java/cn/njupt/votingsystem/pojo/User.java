@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Table(
         name = "user", indexes = {
-                @Index(columnList = "userName")
-        }
+        @Index(columnList = "userName")
+}
 )
 public class User implements Serializable {
     @Id

@@ -22,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 /*开启方法权限认证*/
-@EnableGlobalMethodSecurity(securedEnabled=true)
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 //    private final TigerLogoutSuccessHandler logoutSuccessHandler = new TigerLogoutSuccessHandler("/login");
@@ -36,7 +36,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             "/css/**",
             "/js/**",
             "/channel/**",
-            "/img/**"
+            "/img/**",
+            "/",
+            "/vote"
     };
 
     @Override
@@ -68,7 +70,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    public User login(){
+    public User login() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user.setPassword("***********");
         return user;
