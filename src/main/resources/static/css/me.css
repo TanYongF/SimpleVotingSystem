@@ -45,4 +45,6 @@ theme-color{
 /*----login---------*/
 .login-container{
     width: 90%; !important;
+    margin-bottom: 6%;
+    margin-top: 6%;
 }

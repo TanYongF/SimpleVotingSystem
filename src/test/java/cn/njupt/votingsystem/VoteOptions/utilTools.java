@@ -1,10 +1,15 @@
 package cn.njupt.votingsystem.VoteOptions;
 
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -16,18 +21,16 @@ import java.util.Iterator;
 public class utilTools {
 
     public static void main(String[] args) {
+//        System.out.println(LocalDateTime.now(
+        Date date = new Date();
+        System.out.println(DateUtil.date());
+        System.out.println(date);
+        Date curDate = new Date();
+        for(int i = 0; i < 30; i++){
+            curDate = DateUtil.offset(curDate, DateField.DAY_OF_MONTH, 1);
+            System.out.println(curDate);
+        }
 
-        HashMap<String, Integer> mp = new HashMap<>();
-        mp.put("fafaf", 2);
-        mp.put("fafadffaf", 2);
-        ArrayList<String> arr= new ArrayList<>();
-        arr.add("fafa");
-        arr.add("fafa");
-        System.out.println(JSONUtil.toJsonStr(arr));
-        System.out.println(JSONUtil.toJsonStr(mp));
-        LocalDateTime now = LocalDateTime.now();
-
-        String format = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        System.out.println(format);
     }
+
 }

@@ -2,7 +2,9 @@ package cn.njupt.votingsystem.service;
 
 import cn.njupt.votingsystem.model.UserVoteGroupDay;
 import cn.njupt.votingsystem.pojo.UserVotes;
+import org.springframework.data.domain.Pageable;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,9 +17,15 @@ public interface UserVotesService {
 
     UserVotes save(UserVotes userVotes);
 
+    List<UserVotes> findAllUserVotes(Pageable pageable);
+
     List<UserVoteGroupDay> calByDay();
 
     List<UserVoteGroupDay> calByDayAndChannelId(Integer id);
 
     List<UserVotes> getByVIDAndChannelId(String VID, Integer channelId);
+
+    Integer getTodayVotesSum();
+
+    HashMap<String, Integer> getTodayResult();
 }

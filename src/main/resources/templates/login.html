@@ -11,24 +11,23 @@
 
 
 	</head>
-	<body>
+	<body class="bg">
 		<div th:replace="common :: navbar(2)"></div>
 
 		<!--主体开始-->
 		<div class="container login-container" style="flex: 1 0 auto; width: 90%">
-
-
 			<!--开始-->
-			<div class="row section">
+			<div class="row section  ">
 				<div class="col s12 l12">
-					<div class="card horizontal large" style="height: 600px" >
-						<div class="card-image" >
-							<img width="600" height="500" th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/600/500?blur=5&' " class="responsive-img wp-post-image" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
-							<span class="card-title" id="channelTitleSpan">
-								<p style="font-size: 64px">简约投票系统</p>
-								<br>
-								We Are<br>
-								A Simple Voting System
+					<div class="card horizontal large" style="height: 600px; background-color: rgba(255,255,255,0.5)" >
+						<div class="card-image">
+<!--							<div style="width: 600; height: 500"></div>-->
+							<img width="600" height="500" th:src="'https://picsum.photos/seed/600/500?blur=5' " class="responsive-img wp-post-image" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
+							<span class="card-title" id="channelTitleSpan" style=" background-color: rgba(0,0,0,0)" >
+								<span style="font-size: 64px;line-height: 240px;">简约投票系统
+									<br>Simple Voting
+								</span>
+
 							</span>
 						</div>
 						<div class="card-stacked">
@@ -54,10 +53,9 @@
 												</div>
 											</div>
 											<div class="section row">
-												<div class="right-align">
+												<div class="center-align">
 													<input name="_csrf" type="hidden" value="93edbebc-aa90-4b8c-b372-28f922a9a9e6"/>
-													<button class="btn-large waves-effect waves-light large" type="submit" name="action">登录
-														<!--											<i class="material-icons right">send</i>-->
+													<button class="btn-large waves-effect waves-light pulse" type="submit" name="action">登录
 													</button>
 												</div>
 											</div>
@@ -85,8 +83,6 @@
                     classes: 'rounded red',
                 });
 			}
-
-
 		</script>
 
 	</body>

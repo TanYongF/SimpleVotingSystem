@@ -30,7 +30,6 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public Vote save(Vote v) {
         Optional<Vote> old = voteRepository.findById(v.getId());
-        HashMap<Integer, Integer> mp = new HashMap<>();
 //        if(old.isPresent()){
 //            for(VoteOptions vs : v.getVoteOptionsList()){
 //                mp.put(vs.getId(), mp.getOrDefault(vs.getId() ,0 ) + 1);

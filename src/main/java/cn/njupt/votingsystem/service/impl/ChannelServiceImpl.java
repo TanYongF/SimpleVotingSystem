@@ -108,7 +108,7 @@ public class ChannelServiceImpl implements ChannelService {
         Channel newChannel = channelRepository.save(channel);
         for (Vote vote : newChannel.getVotes()) {
             for (VoteOptions voteOptions : vote.getVoteOptionsList()) {
-                if (!redisService.exists("options_" + voteOptions.getId())) {
+                if (!redisService.exists("option_" + voteOptions.getId())) {
                     redisService.add("option_" + voteOptions.getId());
                 }
             }

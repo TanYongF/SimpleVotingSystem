@@ -11,14 +11,121 @@
 		<link rel="stylesheet" href="/css/me.css" type="text/css">
 		<script type="text/javascript" src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/VotingSystem/js/jquery.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/VotingSystem/js/materialize.min.js" charset="UTF-8"></script>
-
+		<script type="text/javascript" src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/VotingSystem/js/echarts.min.js" charset="UTF-8"></script>
 	</head>
 	<body>
 		<div th:replace="common::root_navbar(0)"></div>
-		<main></main>
+		<main class="container">
+			<div class="section">
+				<div class="card-panel" style="background-color: rgba(255,255,255,0.3)">
+					<div class="row">
+						<blockquote>网站管理</blockquote>
+						<div class="col s4 center" >
+							<div class="card-panel blue lighten-2 white-text">
+								<span class="valign-wrapper "><i>总投票量：</i></span>
+								<span style="font-size: 60px; font-family: Consolas"><strong id="totalVotingNums"></strong></span>
+							</div>
+						</div>
+						<div class="col s4 center">
+							<div class="card-panel green lighten-2 white-text">
+								<span class="valign-wrapper "><i>今日投票：</i></span>
+								<span style="font-size: 60px; font-family: Consolas"><strong id="MaxVotingNums"></strong></span>
+							</div>
+						</div>
+						<div class="col s4 center">
+							<div class="card-panel red lighten-2 white-text">
+								<span class="valign-wrapper "><i>单频道今日投票最高：</i></span>
+								<span style="font-size: 60px; font-family: Consolas"><strong id="MAXVotingChannels"></strong></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<blockquote style="border-color: green"> 投票趋势</blockquote>
+						<div style="background-color: rgba(255,255,255,0.2)">
+							<div id="trend" style="width: 100%;height:400px;"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</main>
 
 
 		<div th:replace="common::footer"></div>
+
+		<script>
+            var trendChart = echarts.init(document.getElementById('trend'));
+
+            $(document).ready(function () {
+                $.ajax({
+                    url: "/result/today",
+                    type: "get"
+                }).done(function (data) {
+                    if(data.code === 200){
+                        $("#totalVotingNums").text(data.data.voting_num);
+                        $("#MaxVotingNums").text(data.data.total_voting_num);
+                        $("#MAXVotingChannels").text(data.data.max_voting_num);
+                    }
+                })
+                $.ajax({
+                    url: "/result/trend/",
+                    type: "get"
+                }).done(function (data) {
+                    if(data.code === 200){
+                        let mp  = JSON.parse(data.message);
+                        let voteData = new Array();
+                        for(let k of Object.keys(mp)){
+                            let item = [k,mp[k]];
+                            voteData.push(item);
+                        }
+                        voteData.sort(function (a,b) {
+                            return a[0] > b[0] ? 1 : -1;
+
+                        })
+                        let option = {
+                            title: {
+                                text: '本月投票量',
+                                left: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                            },
+                            xAxis: {
+                                type: 'time',
+                                splitLine: {
+                                    show: true
+                                },
+                                axisLabel:{
+                                    formatter: function (value) {
+                                        return echarts.format.formatTime("yyyy/MM/dd", new Date(value));
+                                    }
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                boundaryGap: [0, '100%'],
+                                splitLine: {
+                                    show: true
+                                }
+                            },
+                            series: [{
+                                name: '投票量',
+                                type: 'line',
+                                showSymbol: false,
+                                hoverAnimation: true,
+                                data: voteData,
+                                smooth: true
+                            }]
+                        };
+                        trendChart.setOption(option)
+                    }
+                })
+            })
+
+
+
+
+		</script>
 
 
 	</body>

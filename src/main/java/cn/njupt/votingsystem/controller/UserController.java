@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(Authentication authentication, HttpServletResponse response) {
-        if(authentication == null || (!authentication.isAuthenticated())) return "/login";
-        else return "/admin/index";
+        if(authentication == null || (!authentication.isAuthenticated())) return "login";
+        else return "admin/index";
     }
 }
