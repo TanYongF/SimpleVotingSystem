@@ -1,5 +1,6 @@
 package cn.njupt.votingsystem.conf;
 
+import cn.njupt.votingsystem.handler.CustomAuthenticationEntryPoint;
 import cn.njupt.votingsystem.model.RestResult;
 import cn.njupt.votingsystem.pojo.User;
 import cn.njupt.votingsystem.util.ResponseUtil;
@@ -14,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.Resource;
+
 /**
  * @Describe: SpringSecurity配置类
  * @Author: tyf
@@ -25,12 +28,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
+    @Resource
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
 //    private final TigerLogoutSuccessHandler logoutSuccessHandler = new TigerLogoutSuccessHandler("/login");
 
     public static final String[] NO_AUTH_LIST = {
             "/index",
             "/login",
-            "/register",
             "/static/**",
             "/images/**",
             "/css/**",
@@ -45,13 +50,16 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().formLogin().loginPage("/login").loginProcessingUrl("/login").permitAll()
                 //失败处理
-                .failureHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.FORBIDDEN, RestResult.error(403, e.getMessage())))
+//                .failureHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.FORBIDDEN, RestResult.error(403, e.getMessage())))
                 //成功处理
+//                .failureForwardUrl("/l")
+                .failureUrl("/login?error=403")
                 .successHandler((req, resp, e) -> login()).defaultSuccessUrl("/root")
                 .permitAll()
                 .and().exceptionHandling()
                 //请求登录处理，改变默认跳转登录页
-                .authenticationEntryPoint((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.UNAUTHORIZED, RestResult.error(401, "请先登录")))
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+//                .authenticationEntryPoint((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.UNAUTHORIZED, RestResult.error(401, "请先登录")))
                 //没有权限访问
                 .accessDeniedHandler((req, resp, e) -> ResponseUtil.restResponse(resp, HttpStatus.FORBIDDEN, RestResult.error(403, "抱歉，你当前的身份无权访问")))
                 //设置最大一人同时登陆
@@ -59,9 +67,13 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .expiredSessionStrategy(s -> ResponseUtil.restResponse(s.getResponse(), HttpStatus.FORBIDDEN, RestResult.error(499, "您的账号在别的地方登录，当前登录已失效")))
                 .and()
                 //设置登出
-                .and().logout().logoutUrl("/logout").permitAll()
+                .and().logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/index")
+                    .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .permitAll()
                 .and().authorizeRequests().antMatchers(NO_AUTH_LIST).permitAll()
-                .antMatchers("/*.svg", "/*.png", "/*.js", "/*.css").permitAll()
+                .antMatchers("/*.svg", "/*.png", "/*.js", "/*.css", "/*ico").permitAll()
                 .and().authorizeRequests().anyRequest().authenticated();
     }
 

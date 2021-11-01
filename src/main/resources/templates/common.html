@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<div >
-			<nav class="teal lighten-2"  role="navigation" th:fragment="navbar(n)">
+			<nav class="teal lighten-1"  role="navigation" th:fragment="navbar(n)">
 				<div class="nav-wrapper container">
 					<a id="logo-container"  class="brand-logo">
 						<i class="material-icons large">blur_on</i>Simple Voting System
@@ -21,13 +21,16 @@
 			</nav>
 		</div>
 		<div >
-			<nav class="teal lighten-2"  role="navigation" th:fragment="root_navbar(n)">
-				<div class="nav-wrapper container"><a href="./index.html" class="brand-logo">Simple投票系统</a>
+			<nav class="teal lighten-1"  role="navigation" th:fragment="root_navbar(n)">
+				<div class="nav-wrapper container">
+					<a href="./index.html" class="brand-logo">
+						<i class="material-icons large">blur_on</i>后台管理
+					</a>
 					<ul class="right hide-on-med-and-down">
 						<li th:classappend="${n == 0} ? 'active'"><a th:href="@{/root}" class="active">首页</a></li>
 						<li th:classappend="${n == 1} ? 'active'"><a th:href="@{/root/channel}">所有频道</a></li>
 						<li th:classappend="${n == 2} ? 'active'"><a th:href="@{/root/info}">个人信息</a></li>
-						<li th:classappend="${n == 3} ? 'active'"><a th:href="@{/login}">登出</a></li>
+						<li th:classappend="${n == 3} ? 'active'"><a th:href="@{/logout}">登出</a></li>
 					</ul>
 				</div>
 			</nav>

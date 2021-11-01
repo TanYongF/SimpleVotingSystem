@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<title>主页</title>
+		<title>所有频道</title>
 		<!-- CSS  -->
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/VotingSystem/css/materialize.min.css"type="text/css">
@@ -28,7 +28,7 @@
 								</blockquote>
 							</div>
 							<div th:each="index : ${#numbers.sequence(0,1)}">
-								<div class="col s12 m6 l6">
+								<div class="col s12 m12 l6">
 									<div class="card hoverable">
 										<div class="card-image waves-effect waves-block waves-light">
 											<a th:href="@{'/channel/' + ${channels.get(index).id}}">
@@ -74,7 +74,7 @@
 								</blockquote>
 							</div>
 							<div th:each="channel, channelStat : ${channels}">
-								<div class="col s12 m6 l4">
+								<div class="col s12 m12 l4">
 									<div class="card hoverable">
 										<div class="card-image waves-effect waves-block waves-light">
 											<a th:href="@{'/channel/' + ${channel.id}}">

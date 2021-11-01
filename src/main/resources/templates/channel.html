@@ -71,7 +71,7 @@
         }
       }
       $("input").prop("disabled", true);
-      $("#submit_btn").addClass("disabled")
+      $("#submit_btn").prop("disabled", true);
     }
     let form = document.querySelector("form");
     $("#submit_btn").click(function () {
@@ -109,6 +109,7 @@
                 $("submit_btn").prop("disabled", true);
               }
             });
+            $("#submit_btn").prop("disabled", true);
           } else {
             alert("保存失败！");
           }

@@ -1,16 +1,3 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://49.234.79.216:3306/voting?characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: voting
-    password: root
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-  redis:
-    database: 0
-    host: 49.234.79.216
-    port: 6379
-    password: tanyongfeng13666
-    connect-timeout: 3000
+  profiles:
+    active: dev
