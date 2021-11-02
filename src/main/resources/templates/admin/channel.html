@@ -28,7 +28,7 @@
       <div class="row">
         <div class="card">
           <div class="card-image">
-            <img src="https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/1232/100?blur=5"  width="1232" height="100">
+            <img th:src="${imageProxy}+'https://picsum.photos/1232/100?blur=5'"  width="1232" height="100">
             <span class="card-title" id="channelTitleSpan" th:text="${channel.title}" style="font-weight: 900;">Card Title</span>
           </div>
         </div>

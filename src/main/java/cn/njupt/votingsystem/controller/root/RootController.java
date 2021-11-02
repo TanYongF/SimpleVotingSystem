@@ -5,10 +5,14 @@ import cn.njupt.votingsystem.model.ChannelDTO;
 import cn.njupt.votingsystem.model.RestResult;
 import cn.njupt.votingsystem.model.UserDetail;
 import cn.njupt.votingsystem.pojo.Channel;
+import cn.njupt.votingsystem.pojo.UserVotes;
 import cn.njupt.votingsystem.service.ChannelService;
 import cn.njupt.votingsystem.service.RedisService;
 import cn.njupt.votingsystem.service.UserVotesService;
 import com.alibaba.fastjson.JSON;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,7 +112,6 @@ public class RootController {
     @GetMapping("/channel/result/{channelId}")
     public String getResult(@PathVariable Integer channelId, Model model) {
         Channel channel = channelService.getById(channelId);
-//        List<UserVoteGroupDay> userV = userVotesService.calByDayAndChannelId(channelId);
         for (int i = 0; i < channel.getVotes().size(); i++) {
             for (int j = 0; j < channel.getVotes().get(i).getVoteOptionsList().size(); j++) {
                 Integer num =
@@ -116,8 +119,6 @@ public class RootController {
                 channel.getVotes().get(i).getVoteOptionsList().get(j).setTotalVoting(num);
             }
         }
-
-
         model.addAttribute("channel", JSONUtil.toJsonStr(channel));
         return "admin/channelResult";
     }
@@ -127,7 +128,10 @@ public class RootController {
     @GetMapping("/info")
     public String getInfo(Authentication authentication, Model model) {
         UserDetail principal = (UserDetail) authentication.getPrincipal();
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("createAt").descending());
+        List<UserVotes> recentVoting = userVotesService.findAllUserVotes(pageable);
         model.addAttribute("userInfo", principal);
+        model.addAttribute("recentVoting", recentVoting);
         return "admin/info";
     }
 }

@@ -30,22 +30,6 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public Vote save(Vote v) {
         Optional<Vote> old = voteRepository.findById(v.getId());
-//        if(old.isPresent()){
-//            for(VoteOptions vs : v.getVoteOptionsList()){
-//                mp.put(vs.getId(), mp.getOrDefault(vs.getId() ,0 ) + 1);
-//            }
-//
-//            for(VoteOptions vs : old.get().getVoteOptionsList()){
-//                mp.put(vs.getId(), mp.getOrDefault(vs.getId(), 0 ) + 1);
-//            }
-//            for(VoteOptions oldVp : old.get().getVoteOptionsList()){
-//                if(mp.get(oldVp.getId()) != 2) redisService.remove("option_" + oldVp.getId());
-//            }
-//            for(VoteOptions newVp : v.getVoteOptionsList()){
-//
-//            }
-//        }
-//        log.error(v.toString());
         Vote ret = voteRepository.save(v);
         for (VoteOptions vp : ret.getVoteOptionsList()) {
             if (!redisService.exists("option_" + vp.getId())) {

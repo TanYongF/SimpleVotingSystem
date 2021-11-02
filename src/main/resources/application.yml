@@ -1,3 +1,4 @@
 spring:
+  imageProxy: https://pic1.xuehuaimg.com/proxy/
   profiles:
     active: prod

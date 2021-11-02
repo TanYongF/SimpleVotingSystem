@@ -14,13 +14,12 @@
 
   </head>
 <body>
-
   <div th:replace="common :: navbar(1)"></div>
   <div class="container main">
     <div class="row">
       <div class="card">
         <div class="card-image">
-          <img th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/seed/picsum/1200/100?blur=4&random=' + ${votes.id}"  width="1232" height="100">
+          <img th:src="${imageProxy} + 'https://picsum.photos/seed/picsum/325/200?blur=4'"  width="1232" height="100">
           <span class="card-title" id="channelTitleSpan" th:text="${votes.title}" style="font-weight: 900;">Card Title</span>
         </div>
       </div>

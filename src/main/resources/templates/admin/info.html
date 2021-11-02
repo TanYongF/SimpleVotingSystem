@@ -14,9 +14,47 @@
 	</head>
 	<body>
 		<div th:replace="common::root_navbar(2)"></div>
-		<div class="container main" >
-		</div>
-		<main></main>
+		<main>
+			<div class="container">
+				<div class="card-panel" style="background-color: rgba(255,255,255,0.2)">
+					<div class="row">
+						<blockquote>个人信息</blockquote>
+						<form class="col s12">
+							<div class="row">
+								<div class="input-field col s6">
+									<input placeholder="Placeholder" id="first_name" type="text" class="validate" th:value="${userInfo.userName}" disabled>
+									<label for="first_name">用户名称</label>
+								</div>
+								<div class="input-field col s6">
+									<input placeholder="Placeholder" id="lastName" type="text" class="validate" th:value="${userInfo.id}" disabled>
+									<label for="first_name">用户编号</label>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="row">
+						<blockquote style="border-color: green">最近投票</blockquote>
+						<table class="centered highlight responsive-table striped">
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>用户IP</th>
+									<th>投票时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="userVote,userVoteStat : ${recentVoting}">
+									<td th:text="${userVoteStat.index + 1}">0</td>
+									<td th:text="${userVote.userIP}">null</td>
+									<td th:text="${#temporals.format(userVote.createAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		</main>
 
 
 		<div th:replace="common::footer"></div>

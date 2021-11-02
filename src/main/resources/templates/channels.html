@@ -16,7 +16,6 @@
 	</head>
 	<body>
 		<div th:replace="common :: navbar(1)"></div>
-
 		<div class="container">
 			<div class="section">
 				<div class="row">
@@ -32,7 +31,7 @@
 									<div class="card hoverable">
 										<div class="card-image waves-effect waves-block waves-light">
 											<a th:href="@{'/channel/' + ${channels.get(index).id}}">
-												<img width="305" height="229" th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/305/229?blur=1&random=' + ${index + 1} " class="responsive-img wp-post-image" alt="Pikolo Espresso / Downtown, Montréal" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
+												<img width="305" height="229" th:src="${imageProxy} +'https://picsum.photos/305/229?blur=1&random=' + ${index + 1} " class="responsive-img wp-post-image" alt="Pikolo Espresso / Downtown, Montréal" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
 
 												<span th:u class="card-title home" >
 													<span th:text="${channels.get(index).title}"></span>
@@ -78,7 +77,7 @@
 									<div class="card hoverable">
 										<div class="card-image waves-effect waves-block waves-light">
 											<a th:href="@{'/channel/' + ${channel.id}}">
-												<img width="305" height="229" th:src="'https://ip.webmasterapi.com/api/imageproxy/https://picsum.photos/305/229?blur=1&random=' + ${channelStat.index + 1} " class="responsive-img wp-post-image" alt="Pikolo Espresso / Downtown, Montréal" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
+												<img width="305" height="229" th:src="${imageProxy} + 'https://picsum.photos/305/229?blur=1&random=' + ${channelStat.index + 1} " class="responsive-img wp-post-image" alt="Pikolo Espresso / Downtown, Montréal" loading="lazy"  sizes="(max-width: 305px) 100vw, 305px">
 												<span class="card-title home" >
 													<span th:text="${channel.title}">标题</span><br>
 													<span style="font-style: italic" th:text="${#temporals.format(channel.startTime,'yyyy.MM.dd')} + '—' +${#temporals.format(channel.endTime,'MM.dd')} "></span>
