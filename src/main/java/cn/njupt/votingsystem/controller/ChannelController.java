@@ -55,6 +55,7 @@ public class ChannelController {
         boolean canVote = true;
         //如果不存在VID那么就创建，存在就会查找是否可以填写
         if (VID == null) {
+            //生成校验码，只有客户端拿到并和服务端redis数据库进行比对那才能投票
             String uuid = IdUtil.simpleUUID();
             VID = uuid;
             Cookie cookie = new Cookie("VID", VID);
@@ -71,10 +72,10 @@ public class ChannelController {
             redisService.setString(VID, optionCookie.getValue());
             model.addAttribute("canVote", 0);
         } else {
-            List<UserVotes> records = userVotesService.getByVIDAndChannelId(VID, channelId);
-            if (records.size() == 0) model.addAttribute("canVote", 1);
+            List<UserVotes> records = userVotesService.getByVIDAndChannelId(VID, channelId); //获取投票信息
+            if (records.size() == 0) model.addAttribute("canVote", 1); //不可投票，IP数量超限
             else {
-                model.addAttribute("canVote", 2);
+                model.addAttribute("canVote", 2); //不可投票，已经填写过投票数据
                 model.addAttribute("answers", JSONUtil.toJsonStr(records.get(0).getVotes()));
             }
         }

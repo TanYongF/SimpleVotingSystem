@@ -28,8 +28,11 @@ public class UserVotesServiceImpl implements UserVotesService {
 
     @Override
     public boolean checkUser(String IP, String VID, Integer channelId) {
+        //是否存在填写记录
         Boolean hasVisited = userVotesRepository.existsByVIDAndChannelId(VID, channelId);
         if (hasVisited) return false;
+
+        //该IP是否已经超限
         Integer ipCounts = userVotesRepository.countByUserIPAndChannelId(IP, channelId);
         if (ipCounts > 10) return false;
         return true;

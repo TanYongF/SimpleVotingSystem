@@ -53,6 +53,8 @@ public class VoteController {
                                          HttpServletResponse response) {
 
         String ipAddress = IPUtil.getIpAddress(request);
+
+        //将生成的VID和其进行比对
         String trueOption = (String) redisService.get(VID);
         if (!trueOption.equals(optionId)) {
             return RestResult.error(400, Boolean.FALSE);
@@ -72,7 +74,7 @@ public class VoteController {
         userVotesService.save(userVotes);
 
         //redis清除
-        redisService.remove("channel_" + VID);
+        redisService.remove(VID);
 
         return RestResult.success(200, Boolean.TRUE);
     }
