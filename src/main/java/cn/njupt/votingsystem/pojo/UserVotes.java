@@ -1,7 +1,10 @@
 package cn.njupt.votingsystem.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,6 +18,7 @@ import java.time.LocalDateTime;
  **/
 @Entity
 @Data
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class UserVotes {
     @Id
@@ -33,4 +37,10 @@ public class UserVotes {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createAt;
 
+    public UserVotes(String userIP, String VID, Integer channelId, String votes){
+        this.userIP=userIP;
+        this.VID=VID;
+        this.channelId = channelId;
+        this.votes = votes;
+    }
 }

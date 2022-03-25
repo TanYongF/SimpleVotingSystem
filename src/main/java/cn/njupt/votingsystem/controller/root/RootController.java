@@ -78,7 +78,7 @@ public class RootController {
         return RestResult.success(200, save.getId());
     }
 
-    /*只更新频道名称*/
+    /*更新频道名称*/
     @PutMapping("/channel/info")
     @ResponseBody
     public RestResult<Boolean> updateInfo(@RequestBody Channel channel) {

@@ -18,6 +18,8 @@ public interface ChannelService {
 
     List<ChannelDTO> findAllToChannelInfo();
 
+    List<ChannelDTO> findAllToChannelInfo(List<Integer> list);
+
     Boolean deleteById(Integer id);
 
     Channel save(Channel channel);

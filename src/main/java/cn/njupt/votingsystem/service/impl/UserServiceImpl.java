@@ -38,4 +38,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new UserDetail(u);
     }
 
+    @Override
+    public boolean vote() {
+        return true;
+    }
 }

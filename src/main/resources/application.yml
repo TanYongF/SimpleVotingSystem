@@ -1,4 +1,23 @@
 spring:
   imageProxy: https://pic1.xuehuaimg.com/proxy/
   profiles:
-    active: prod
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/voting?characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: voting
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: yourpassword
+    connect-timeout: 3000
+    jackson:
+      serialization:
+        fail-on-empty-beans: false
+  thymeleaf:
+    cache: false

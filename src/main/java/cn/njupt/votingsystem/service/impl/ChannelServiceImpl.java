@@ -48,6 +48,11 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
+    public List<ChannelDTO> findAllToChannelInfo(List<Integer> list) {
+        return channelRepository.findAllToChannelInfo(list);
+    }
+
+    @Override
     public List<ChannelDTO> findAllToChannelInfo() {
         return channelRepository.findAllToChannelInfo();
     }
@@ -56,7 +61,8 @@ public class ChannelServiceImpl implements ChannelService {
     @Transactional
     public Boolean deleteById(Integer id) {
         Channel byId = channelRepository.getById(id);
-        redisService.remove("channel_" + byId.getId());
+//        redisService.remove("channel_" + byId.getId());
+        redisService.zRemove(RedisService.REDIS_HOT_LIST, id);
         for (Vote vote : byId.getVotes()) {
             int[] voteOptionsId = vote.getVoteOptionsList().stream().mapToInt(VoteOptions::getId).toArray();
             ArrayList keys = new ArrayList<String>();
@@ -72,13 +78,14 @@ public class ChannelServiceImpl implements ChannelService {
     public Channel save(Channel channel) {
         channel.setVotingNum(-1);
         Channel newChannel = channelRepository.save(channel);
-        redisService.set("channel_" + newChannel.getId(), 0);
+//        redisService.set("channel_" + newChannel.getId(), 0);
+        redisService.zAdd(RedisService.REDIS_HOT_LIST, channel.getId().toString(), 0);
         for (Vote vote : newChannel.getVotes()) {
             int[] voteOptionsIds =
                     vote.getVoteOptionsList().stream().mapToInt(VoteOptions::getId).toArray();
             ArrayList<String> keys = new ArrayList<String>();
             for (Integer id : voteOptionsIds) keys.add("options_" + id);
-            redisService.add((String[]) keys.toArray(new String[0]));
+            redisService.add(keys.toArray(new String[0]));
         }
         return newChannel;
     }

@@ -6,6 +6,7 @@ import cn.njupt.votingsystem.pojo.UserVotes;
 import cn.njupt.votingsystem.pojo.Vote;
 import cn.njupt.votingsystem.service.RedisService;
 import cn.njupt.votingsystem.service.UserVotesService;
+import cn.njupt.votingsystem.service.VoteOptionsService;
 import cn.njupt.votingsystem.service.VoteService;
 import cn.njupt.votingsystem.util.IPUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,9 @@ public class VoteController {
     @Resource
     private UserVotesService userVotesService;
 
+    @Resource
+    private VoteOptionsService voteOptionsService;
+
 
     @ResponseBody
     @GetMapping("/vote")
@@ -61,20 +65,23 @@ public class VoteController {
         }
 
         //频道投票数加1
-        redisService.plus("channel_" + channelId);
-
+//        redisService.plus(RedisService.REDIS_CHANNEL_PREFIX + channelId);
         //投票项每一项加1
-        for (Integer optionsId : votes) redisService.plus("option_" + optionsId);
-        //记录事件
-        UserVotes userVotes = new UserVotes();
-        userVotes.setUserIP(ipAddress);
-        userVotes.setChannelId(channelId);
-        userVotes.setVID(VID);
-        userVotes.setVotes(JSONUtil.toJsonStr(votes));
-        userVotesService.save(userVotes);
+        for (Integer optionsId : votes) redisService.plus(RedisService.REDIS_OPTION_PREFIX + optionsId);
+        //更新热榜
+        redisService.alterHotList(RedisService.REDIS_HOT_LIST, channelId.toString());
+
+
+
+
+
 
         //redis清除
         redisService.remove(VID);
+
+        //记录事件
+        UserVotes userVotes = new UserVotes(ipAddress, VID, channelId, JSONUtil.toJsonStr(votes));
+        userVotesService.save(userVotes);
 
         return RestResult.success(200, Boolean.TRUE);
     }

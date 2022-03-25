@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="/css/me.css" type="text/css">
     <script type="text/javascript" src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/VotingSystem/js/jquery.js" charset="UTF-8"></script>
     <script type="text/javascript" src="https://kauizhaotan.oss-cn-shanghai.aliyuncs.com/VotingSystem/js/materialize.min.js" charset="UTF-8"></script>
-
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs/v0.5.1/fingerprint.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="/js/init.js" type="text/javascript"></script>
   </head>
 <body>
   <div th:replace="common :: navbar(1)"></div>
@@ -50,8 +51,9 @@
 
   <script th:inline="javascript">
     M.AutoInit();
+    myInit();
     let canVote = [[${canVote}]];
-
+    // console.log('你的VID:' +  fingerprint)
     // console.log(canVote);
     if(canVote){
       if(canVote === 1){

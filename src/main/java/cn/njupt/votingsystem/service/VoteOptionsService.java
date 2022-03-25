@@ -6,4 +6,6 @@ package cn.njupt.votingsystem.service;
  * @CreateTime: 2021/10/25
  **/
 public interface VoteOptionsService {
+
+    void updateVotingCount(Integer optionId, Integer count);
 }
